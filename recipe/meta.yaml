@@ -11,7 +11,7 @@ source:
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 0
+  number: 1
   skip: True  # [py<37]
 
 requirements:
@@ -21,30 +21,37 @@ requirements:
     - hatchling >=1.10.0
     - jupyterlab >=4.0.0
     - hatch-nodejs-version
-    - hatch-jupyter-builder>=0.5
+    - hatch-jupyter-builder >=0.5
   run:
     - python
     - ploomber-core
-    # Temporary due to cycle-dep with jupysql
-    # - jupysql
+    - jupysql
 
-# Temporary due to cycle-dep with jupysql
-# test:
-#   source_files:
-#     - tests
-#   imports:
-#     - jupysql_plugin
-#     - jupysql_plugin.widgets
-#     - jupysql_plugin.widgets.connections
-#     - jupysql_plugin.widgets.connector_widget
-#     - jupysql_plugin.widgets.db_templates
-#   commands:
-#     - pip check
-#     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-#     - pytest -v tests
-#   requires:
-#     - pip
-#     - pytest
+# sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:duckdb
+{% set deselect_tests = " --deselect=tests/test_connections.py::test_save_connection_to_config_file_and_connect_in_nested_dir[default]" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_connections.py::test_save_connection_to_config_file_and_connect_in_nested_dir[nested]" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_connector_widget.py::test_method_submit_new_connection" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_connector_widget.py::test_method_submit_new_connection_path" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_connector_widget.py::test_method_connect" %}
+# E           AttributeError: 'ConfigParser' object has no attribute 'readfp'. Did you mean: 'read'?
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_connections.py::test_delete_section_with_name" %}
+
+test:
+  source_files:
+    - tests
+  imports:
+    - jupysql_plugin
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests {{ deselect_tests }}
+  requires:
+    - pip
+    - pytest
+    - jupyter_server
+    - pytest-jupyter
+    - ipython
+    - ipywidgets
 
 about:
   home: https://github.com/ploomber/jupysql-plugin
