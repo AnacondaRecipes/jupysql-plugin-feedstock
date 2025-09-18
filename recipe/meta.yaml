@@ -25,7 +25,8 @@ requirements:
   run:
     - python
     - ploomber-core
-    - jupysql
+    # Temporary due to cycle-dep with jupysql
+    # - jupysql
 
 # Temporary due to cycle-dep with jupysql
 # test:
