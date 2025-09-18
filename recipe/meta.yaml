@@ -27,6 +27,7 @@ requirements:
     - ploomber-core
     - jupysql
 
+# Temporary due to cycle-dep with jupysql
 # test:
 #   source_files:
 #     - tests
