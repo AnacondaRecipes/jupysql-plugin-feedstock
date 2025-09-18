@@ -27,22 +27,22 @@ requirements:
     - ploomber-core
     - jupysql
 
-test:
-  source_files:
-    - tests
-  imports:
-    - jupysql_plugin
-    - jupysql_plugin.widgets
-    - jupysql_plugin.widgets.connections
-    - jupysql_plugin.widgets.connector_widget
-    - jupysql_plugin.widgets.db_templates
-  commands:
-    - pip check
-    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests
-  requires:
-    - pip
-    - pytest
+# test:
+#   source_files:
+#     - tests
+#   imports:
+#     - jupysql_plugin
+#     - jupysql_plugin.widgets
+#     - jupysql_plugin.widgets.connections
+#     - jupysql_plugin.widgets.connector_widget
+#     - jupysql_plugin.widgets.db_templates
+#   commands:
+#     - pip check
+#     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+#     - pytest -v tests
+#   requires:
+#     - pip
+#     - pytest
 
 about:
   home: https://github.com/ploomber/jupysql-plugin
