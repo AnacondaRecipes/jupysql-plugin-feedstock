@@ -10,36 +10,49 @@ source:
   sha256: 7085e178898ee012f4d339f5d356432332a5daa9080ec4cdb3064e0ace7894d6
 
 build:
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  skip: True  # [py<37]
 
 requirements:
   host:
-    - python >=3.7
-    - hatchling >=1.4.0
-    - jupyterlab >=3.4.7,<4.0.0
-    - hatch-jupyter-builder
-    - hatch-nodejs-version
+    - python
     - pip
+    - hatchling >=1.10.0
+    - jupyterlab >=4.0.0
+    - hatch-nodejs-version
+    - hatch-jupyter-builder>=0.5
   run:
-    - python >=3.7
+    - python
     - ploomber-core
-    - jupyter_server
+    - jupysql
 
 test:
+  source_files:
+    - tests
   imports:
     - jupysql_plugin
+    - jupysql_plugin.widgets
+    - jupysql_plugin.widgets.connections
+    - jupysql_plugin.widgets.connector_widget
+    - jupysql_plugin.widgets.db_templates
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/ploomber/jupysql-plugin
   summary: Jupyterlab extension for JupySQL
+  description: Jupyterlab extension for JupySQL
   license: BSD-3-Clause
+  license_family: BSD
   license_file: LICENSE
+  dev_url: https://github.com/ploomber/jupysql-plugin
+  doc_url: https://github.com/ploomber/jupysql-plugin
 
 extra:
   recipe-maintainers:

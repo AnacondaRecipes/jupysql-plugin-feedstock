@@ -1,0 +1,5 @@
+build_parameters:
+  - "--no-test"
+  - "--suppress-variables"
+  - "--skip-existing"
+  - "--error-overlinking"
