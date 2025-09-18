@@ -21,7 +21,7 @@ requirements:
     - hatchling >=1.10.0
     - jupyterlab >=4.0.0
     - hatch-nodejs-version
-    - hatch-jupyter-builder>=0.5
+    - hatch-jupyter-builder >=0.5
   run:
     - python
     - ploomber-core
